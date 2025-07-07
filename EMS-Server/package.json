@@ -1,0 +1,18 @@
+{
+  "name": "ems-server",
+  "version": "1.0.0",
+  "description": "EMS_BackendServer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Engineering",
+    "Management"
+  ],
+  "author": "Abhishek Kaplesh",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
