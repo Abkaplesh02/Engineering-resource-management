@@ -77,13 +77,13 @@ const Login = () => {
           >
             {login ? "Sign up" : "Sign in"}
           </button>
-
+                 
           {error && 
           <div className="text-red-500 text-2xl font-bold mb-4">
             {error}
           </div>}
           <div className="flex justify-between text-lg text-gray-500 mt-4">
-            <a href="#" className="hover:underline">
+            <a href="#" className="hover:underline" onClick={handleRegister}> 
               {login ? "Already have an account?" : "New here? Register now!"}
             </a>
             <a href="#" className="text-blue-500 hover:underline" onClick={handleRegister}> 
