@@ -1,12 +1,46 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
 
 const Login = () => {
   const [login,setLogin]=useState(false);
   const [error,setError]=useState(null);
+  const email=useRef();
+  const password=useRef();
+  const username=useRef();
 
   const handleRegister=()=>{
     setLogin(!login);
   }
+
+  const handleRegisterAccount = async(e) => {
+    e.preventDefault();
+    // Logic for registering an account
+    // If there's an error, set it using setError
+    // Example: setError("Registration failed. Please try again.");
+    const user={
+      email: email.current.value,
+      password: password.current.value,
+      username: username.current.value
+    }
+    // Here you would typically send the user data to your backend for registration
+    try{
+      // Simulating a registration API call
+      const response=await axios.post("http://localhost:7777/register",user);
+      console.log(response.data);
+    }
+    catch(err){
+      setError(err.message);
+    }
+  }
+
+  const handleloginAccount = (e) => {
+    e.preventDefault();
+    // Logic for logging in to an account
+    // If there's an error, set it using setError
+    // Example: setError("Login failed. Please check your credentials.");
+
+  }
+
   return (
     <div className="flex justify-around min-h-screen bg-[#0F1B2D] text-white">
       {/* Left Side */}
@@ -48,6 +82,7 @@ const Login = () => {
               type="email"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="you@example.com"
+              ref={email}
             />
           </div>
 
@@ -60,6 +95,7 @@ const Login = () => {
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your name"
+              ref={username}
             />
           </div>
            }
@@ -69,11 +105,13 @@ const Login = () => {
               type="password"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
+              ref={password}
             />
           </div>
           <button
             type="submit"
             className="w-full my-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition cursor-pointer"
+            onClick={login ? handleRegisterAccount : handleloginAccount}
           >
             {login ? "Sign up" : "Sign in"}
           </button>

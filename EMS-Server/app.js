@@ -7,13 +7,11 @@ const authRouter = require('./src/routes/register');
 require('dotenv').config();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
 
-
-
-// app.use(cors({
-//     origin: process.env.CLIENT_URL,
-//     credentials: true
-// }));
 
 app.use("/",authRouter);
 
