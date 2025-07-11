@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
+import { BASE_URL } from "../utils/constants";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [login,setLogin]=useState(false);
@@ -7,6 +9,8 @@ const Login = () => {
   const email=useRef();
   const password=useRef();
   const username=useRef();
+  const formState=useRef();
+  const Navigate=useNavigate();
 
   const handleRegister=()=>{
     setLogin(!login);
@@ -25,20 +29,48 @@ const Login = () => {
     // Here you would typically send the user data to your backend for registration
     try{
       // Simulating a registration API call
-      const response=await axios.post("http://localhost:7777/register",user);
-      console.log(response.data);
+      setError(null); // Clear any previous errors
+      const response=await axios.post(BASE_URL+"register",user);
+      formState.current.reset(); // Reset the form after successful registration
+      setLogin(!login); // Toggle login state
     }
     catch(err){
-      setError(err.message);
+      if(err.response){
+        setError(`Error: ${err.response.status} ${err.response.statusText}`);
+      }else{
+        setError(err.message);
+      }
+      console.log(err);
     }
   }
 
-  const handleloginAccount = (e) => {
+  const handleloginAccount = async(e) => {
     e.preventDefault();
     // Logic for logging in to an account
     // If there's an error, set it using setError
     // Example: setError("Login failed. Please check your credentials.");
+    const user={
+      email: email.current.value,
+      password: password.current.value
+    }
+    try{
 
+      // Here you would typically send the user data to your backend for login
+      await axios.post(BASE_URL+"login",user,{withCredentials:true});
+      
+      formState.current.reset(); // Reset the form after successful login
+      Navigate("/");
+
+    }
+    catch(err){
+      if(err.response){
+        setError(`Error: ${err.response.status} ${err.response.statusText}`);
+      }else{
+        setError(err.message);
+      }
+      console.log(err);
+      // Handle the error appropriately, e.g., show an error message to the user
+    }
   }
 
   return (
@@ -69,13 +101,13 @@ const Login = () => {
             <div className="w-6 h-6 bg-blue-500 border border-gray-300 rounded-sm" />
             <div className="w-6 h-6 bg-blue-500 rounded-sm" />
           </div>
-          <p className="ml-4 text-2xl font-bold"><span clssName="">ERM</span></p>
+          <p className="ml-4 text-2xl font-bold"><span className="">ERM</span></p>
         </div>
 
-        <h2 className="text-3xl font-bold mb-1">Welcome Back</h2>
+        <h2 className="text-3xl font-bold mb-1" >Welcome Back</h2>
         <p className="text-lg text-gray-600 mb-6">Sign {login ? "in" : "up"} to your account</p>
 
-        <form className="w-full max-w-sm">
+        <form className="w-full max-w-sm" ref={formState}> 
           <div className="mb-4">
             <label className="block text-gray-700 text-lg mb-1">Email</label>
             <input
@@ -90,7 +122,7 @@ const Login = () => {
             login &&
          
           <div className="mb-4">
-            <label className="block text-gray-700 text-lg mb-1">Name</label>
+            <label className="block text-gray-700 text-lg mb-1">UserName</label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
