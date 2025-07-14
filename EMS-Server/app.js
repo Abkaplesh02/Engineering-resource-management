@@ -3,17 +3,16 @@ const connectDB = require('./src/database/database');
 const cookieParser = require('cookie-parser');
 const app=express();
 const cors=require('cors');
+app.use(cors({
+  origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+const userRouter = require('./src/routes/user');
 require('dotenv').config();
 app.use(express.json());
 app.use(cookieParser());
-
-
-
-// app.use(cors({
-//     origin: process.env.CLIENT_URL,
-//     credentials: true
-// }));
-
+app.use("/api/user",userRouter);
 
 
 connectDB().then(()=>{

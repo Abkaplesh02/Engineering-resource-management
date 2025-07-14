@@ -22,3 +22,6 @@ const engineerSchema=new mongoose.Schema({
         default:40, // Default to 40 hours per week
     }
 },{timestamps:true});
+
+const Engineer=mongoose.model("Engineer",engineerSchema);
+module.exports=Engineer;
